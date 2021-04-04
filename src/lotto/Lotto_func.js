@@ -53,11 +53,7 @@ const Lotto_func = () => {
         timeouts.current[i] = setTimeout(() => {
           //lottoNumber배열에 lottoNums에서 담아놓은 숫자 6개를 담습니다.
           //여기서 timeouts.current는 배열이 바뀌는게 아니고 요소를 넣어주는 작용입니다.
-          setLottoNumber((prevState) => {
-            return {
-              lottoNumber: [...prevState.lottoNumber, lottoNums[i]],
-            };
-          });
+          setLottoNumber((prevBalls) => [...prevBalls, lottoNums[i]]);
         }, (i + 1) * 1000); //첫번째공은 1초, 두번째공은 2초.. 이렇게 나타납니다.
       }
 
