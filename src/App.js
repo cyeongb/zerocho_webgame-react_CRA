@@ -2,10 +2,12 @@ import "./App.css";
 import Baseball_func from "./baseball/Baseball_func";
 import Lotto_func from "./lotto/Lotto_func";
 import Rsp_func from "./rsp/Rsp_func";
+import Gugudan from "./gugudan/Gugudan";
+import Tictactoe from "./tictacto/Tictactoe";
 function App() {
   return (
     <div className="App">
-      <Rsp_func />
+      <Tictactoe />
     </div>
   );
 }

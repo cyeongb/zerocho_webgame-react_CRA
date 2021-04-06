@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+<style></style>
+
+<body>
+    <div id='root'></div>
+    <script type="text/babel">
+        const Gugudan = () => {
+            const [firstNum, setFirstNum] = React.useState(Math.ceil(Math.random() * 9));
+            const [secondNum, setSecondNum] = React.useState(Math.ceil(Math.random() * 9));
+            const [input, setInput] = React.useState('');
+            const [result, setResult] = React.useState('');
+            const [count, setCount] = React.useState(0);
+            const ref = React.useRef(null);
+
+            const onSubmit = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                if (parseInt(input) === firstNum * secondNum) {
+                    setResult('ANSWER:' + input);
+                    setFirstNum(Math.ceil(Math.random() * 9));
+                    setSecondNum(Math.ceil(Math.random() * 9));
+                    setInput('');
+                    setCount(count + 1);
+                    ref.current.focus();
+
+
+                } else {
+                    setResult('WRONG!');
+                    ref.current.focus();
+
+                }
+
+            }
+
+            const onChange = (e) => {
+                setInput(e.target.value);
+
+            }
+
+
+            return (
+                <React.Fragment>
+                    <h2>Gu gu dan Question</h2>
+                    <form onSubmit={onSubmit}>
+                        <div>{firstNum} X {secondNum} =
+                                <input ref={ref} type="number" placeholder="answer" value={input}
+                                onChange={onChange} /></div>
+
+                        <button onClick={onSubmit}>click</button>
+                    </form>
+                    <div>CORRECT COUNT :{count}</div>
+                    <div className="rs"><b>{result}</b></div>
+
+                </React.Fragment>
+            );
+        }
+
+
+// 1-4 중간쯤
+    </script>
+    <script type="text/babel">
+        ReactDOM.render(<Gugudan />, document.querySelector('#root'));
+
+    </script>
+</body>
+
+</html>

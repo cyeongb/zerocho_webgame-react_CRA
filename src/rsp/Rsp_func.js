@@ -63,7 +63,7 @@ const Rsp_func = memo(() => {
   useEffect(() => {
     console.log("useEffect coord :", coord);
     //componentDidMount +componentDidUpdate 역할  특정 데이터가 바뀌면 계속 실행됩니다. setTimeout처럼.
-    interval.current = setInterval(changeHand, 400);
+    interval.current = setInterval(changeHand, 100);
     return () => {
       // return 은 componentWillUnMount 역할.
       clearInterval(interval.current); //클릭하면 멈춰서 누가 이겼는지 눈으로 확인하기 위함입니다.
