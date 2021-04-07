@@ -29,18 +29,19 @@ const initialState = {
   halted: true,
   opendedCoount: 0, //연 갯수
   data: {
-    row: 0,
-    cell: 0,
-    mine: 0,
+    row: 0, //세로
+    cell: 0, //가로
+    mine: 0, //지뢰
   },
 };
 
 //지뢰배치함수
 const plantMine = (row, cell, mine) => {
-  console.log("가로:" + row + "세로:" + cell + "지뢰:" + mine);
+  console.log("가로:" + cell + "세로:" + row + "지뢰:" + mine);
   const candidate = Array(row * cell)
-    .fill() //0~99까지의 숫자 배열 만듬
+    .fill()
     .map((arr, i) => {
+      //0~98까지의 숫자배열 만듬
       return i;
     });
 
@@ -51,16 +52,16 @@ const plantMine = (row, cell, mine) => {
       Math.floor(Math.random() * candidate.length),
       1
     )[0];
-    shuffledMine.concat(chosen); //1개씩 지뢰갯수만큼 shuffledMine배열을 채웁니다
+    shuffledMine.push(chosen); //1개씩 지뢰갯수만큼 shuffledMine배열을 채웁니다
   }
 
   const data = [];
 
   for (let i = 0; i < row; i++) {
     const rowdata = [];
-    data.concat(rowdata);
+    data.push(rowdata);
     for (let j = 0; j < cell; j++) {
-      rowdata.concat(CODE.NORMAL); //NORMAL 칸으로 2차원 배열 만듬(100칸)
+      rowdata.push(CODE.NORMAL); //NORMAL 칸으로 2차원 배열 만듬(100칸)
     }
   }
 
@@ -93,6 +94,7 @@ const reducer = (state, action) => {
         tableData: plantMine(action.row, action.cell, action.mine),
         halted: false,
         timer: 0,
+        result: "",
       };
 
     case OPEN_CELL: {
@@ -195,7 +197,7 @@ const reducer = (state, action) => {
       ) {
         //지뢰빼고 다 열었으면 승리
         halted = true;
-        result = `${state.timer}초만에 승리!`;
+        result = `지뢰찾기 성공 ! | ${state.timer}초걸렸습니다`;
       }
 
       return {
@@ -207,13 +209,16 @@ const reducer = (state, action) => {
       };
     }
     case CLICK_MINE: {
+      let result = "";
       const tableData = [...state.tableData];
       tableData[action.row] = [...state.tableData[action.row]];
       tableData[action.row][action.cell] = CODE.CLICKED_MINE;
+      result = `지뢰찾기 실패 ! | ${state.timer}초걸렸습니다`;
       return {
         ...state,
         tableData,
         halted: true,
+        result,
       };
     }
 

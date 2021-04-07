@@ -1,21 +1,23 @@
 import React, { useState, useCallback, useContext } from "react";
-import { TableContext } from "./MineSearch";
+import { START_GAME, TableContext } from "./MineSearch";
 
 const Form = () => {
-  const [ver, setVer] = useState(10); //세로
-  const [hor, setHor] = useState(10); //가로
-  const [mine, setMine] = useState(ver + hor);
+  const [row, setRow] = useState(10); //세로
+  const [cell, setCell] = useState(10); //가로
+  const [mine, setMine] = useState(row + cell);
+
+  const { dispatch } = useContext(TableContext);
 
   // contextAPI를 useContext로 가져와서 사용
   const value = useContext(TableContext);
 
   //row
-  const onChangeVer = useCallback((e) => {
-    setVer(e.currentTarget.value);
+  const onChangeRow = useCallback((e) => {
+    setRow(e.currentTarget.value);
   }, []);
 
-  const onChangeHor = useCallback((e) => {
-    setHor(e.currentTarget.value);
+  const onChangeCell = useCallback((e) => {
+    setCell(e.currentTarget.value);
   }, []);
 
   const onChangeMine = useCallback((e) => {
@@ -25,9 +27,9 @@ const Form = () => {
   const onClickBtn = useCallback(
     (e) => {
       //클릭할때 전해줄 데이터들 = action
-      dispatch({ type: START_GAME, ver, hor, mine });
+      dispatch({ type: START_GAME, row, cell, mine });
     },
-    [ver, hor, mine]
+    [row, cell, mine]
   );
 
   return (
@@ -35,14 +37,14 @@ const Form = () => {
       <input
         type="number"
         placeholder="세로길이"
-        value={ver}
-        onChange={onChangeVer}
+        value={row}
+        onChange={onChangeRow}
       />
       <input
         type="number"
         placeholder="가로길이"
-        value={hor}
-        onChange={onChangeHor}
+        value={cell}
+        onChange={onChangeCell}
       />
       <input
         type="number"

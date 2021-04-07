@@ -6,10 +6,11 @@ import Gugudan from "./gugudan/Gugudan";
 import Tictactoe from "./tictacto/Tictactoe";
 import WordRelay from "./wordrelay/WordRelay_func";
 import Reponse from "./response/Response_func";
+import MineSearch from "./mineSearch/MineSearch";
 function App() {
   return (
     <div className="App">
-      <Reponse />
+      <MineSearch />
     </div>
   );
 }

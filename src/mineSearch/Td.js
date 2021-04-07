@@ -43,7 +43,7 @@ const getTdText = (code) => {
     case CODE.NORMAL:
       return "";
     case CODE.MINE:
-      return "😱";
+      return "지뢰";
     case CODE.CLICKED_MINE:
       return "💥";
     case CODE.FLAG_MINE:
@@ -76,13 +76,15 @@ const Td = memo(({ rowIndex, cellIndex }) => {
       case CODE.FLAG_MINE:
       case CODE.QUESTION:
       case CODE.QUESTION_MINE:
-        return;
+        return; //이 칸들은 클릭 안되게
 
       case CODE.NORMAL: {
+        //일반칸은 누르면  OPEN_CELL
         dispatch({ type: OPEN_CELL, row: rowIndex, cell: cellIndex });
         return;
       }
       case CODE.MINE: {
+        //지뢰칸을 누르면 CLICK_MINE
         dispatch({ type: CLICK_MINE, row: rowIndex, cell: cellIndex });
         return;
       }
