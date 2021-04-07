@@ -91,14 +91,16 @@ const Td = memo(({ rowIndex, cellIndex }) => {
     }
   }, [tableData[rowIndex][cellIndex], halted]);
 
+  // 오른쪽 클릭
   const onRightClickTd = useCallback(
     (e) => {
-      e.preventDefault();
+      e.preventDefault(); //우클릭 시 메뉴뜨기 방지
 
       if (halted) {
         return;
       }
 
+      // case에 따라 서로 순환이 됩니다
       switch (tableData[rowIndex][cellIndex]) {
         case CODE.NORMAL:
         case CODE.MINE:

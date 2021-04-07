@@ -3,11 +3,11 @@ import Table from "./Table";
 import Form from "./Form";
 export const CODE = {
   //지뢰 상태에 대한 코드
-  MINE: -7,
-  NORMAL: -1,
-  QUESTION: -2,
-  FLAG: -3,
-  QUESTION_MINE: -4,
+  MINE: -7, //지뢰있는칸
+  NORMAL: -1, //일반 칸
+  QUESTION: -2, // ?
+  FLAG: -3, //깃발
+  QUESTION_MINE: -4, //지뢰칸+깃발
   FLAG_MINE: -5,
   CLICKED_MINE: -6,
   OPENED: 0, // 0이상이면 다  OPENED
@@ -74,13 +74,14 @@ const plantMine = (row, cell, mine) => {
   return data; // == tableData
 };
 
-export const START_GAME = "START_GAME";
-export const OPEN_CELL = "OPEN_CELL";
-export const CLICK_MINE = "CLICK_MINE";
-export const FLAG_CELL = "FLAG_CELL";
-export const QUESTION_CELL = "QUESTION_CELL";
-export const NORMALIZE_CELL = "NORMALIZE_CELL";
-export const INCREMENT_TIMER = "INCREMENT_TIMER";
+// ----------------------------------  action들
+export const START_GAME = "START_GAME"; //게임 시작
+export const OPEN_CELL = "OPEN_CELL"; //칸을 클릭
+export const CLICK_MINE = "CLICK_MINE"; //지뢰를 클릭했을 때
+export const FLAG_CELL = "FLAG_CELL"; //깃발 클릭
+export const QUESTION_CELL = "QUESTION_CELL"; //물음표 클릭
+export const NORMALIZE_CELL = "NORMALIZE_CELL"; //일반칸으로 되돌림
+export const INCREMENT_TIMER = "INCREMENT_TIMER"; //시간 증가
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -92,7 +93,7 @@ const reducer = (state, action) => {
 
         openedCount: 0,
         tableData: plantMine(action.row, action.cell, action.mine),
-        halted: false,
+        halted: false, //지뢰 클릭 시 게임 멈추는 용도
         timer: 0,
         result: "",
       };
@@ -208,11 +209,13 @@ const reducer = (state, action) => {
         result,
       };
     }
+
+    // 지뢰를 클릭했을 때
     case CLICK_MINE: {
       let result = "";
       const tableData = [...state.tableData];
       tableData[action.row] = [...state.tableData[action.row]];
-      tableData[action.row][action.cell] = CODE.CLICKED_MINE;
+      tableData[action.row][action.cell] = CODE.CLICKED_MINE; //불변성을 지키기위해 두번에 걸쳐 데이터를 담음
       result = `지뢰찾기 실패 ! | ${state.timer}초걸렸습니다`;
       return {
         ...state,
