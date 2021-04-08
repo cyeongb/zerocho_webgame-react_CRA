@@ -54,7 +54,7 @@ const getTdText = (code) => {
     case CODE.QUESTION:
       return "❔";
     default:
-      return code || "";
+      return code || ""; //return이 0 이면 빈칸
   }
 };
 
@@ -65,6 +65,7 @@ const Td = memo(({ rowIndex, cellIndex }) => {
 
   const onClickTd = useCallback(() => {
     if (halted) {
+      //게임이 끝남
       return;
     }
     // eslint-disable-next-line default-case

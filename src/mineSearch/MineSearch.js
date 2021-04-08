@@ -26,7 +26,7 @@ const initialState = {
   tableData: [],
   timer: 0, // 게임시간
   result: "",
-  halted: true,
+  halted: true, //지뢰 클릭하면 게임오버
   opendedCoount: 0, //연 갯수
   data: {
     row: 0, //세로
@@ -93,7 +93,7 @@ const reducer = (state, action) => {
 
         openedCount: 0,
         tableData: plantMine(action.row, action.cell, action.mine),
-        halted: false, //지뢰 클릭 시 게임 멈추는 용도
+        halted: false,
         timer: 0,
         result: "",
       };
@@ -108,8 +108,11 @@ const reducer = (state, action) => {
       let openedCount = 0;
       console.log("tableData.length>" + tableData.length);
 
+      //클릭한 칸 주변 검사해서 빈칸 주변 빈칸들을 한꺼번에 열게 할 것임
+
+      // 내 기준으로 검사하는 함수
       const checkAround = (row, cell) => {
-        console.log("row>" + row + "cell>" + cell);
+        console.log("row=>" + row + "cell=>" + cell);
         if (
           row < 0 ||
           row >= tableData.length ||
@@ -136,17 +139,23 @@ const reducer = (state, action) => {
           checked.concat(row + "/" + cell);
           //열었던 칸이라고 표시.
         }
+        // 클릭한 칸 주변에 지뢰 갯수를 파악하는 알고리즘
+
         let around = [tableData[row][cell - 1], tableData[row][cell + 1]]; //연 칸의 주변칸
 
         if (tableData[row - 1]) {
+          //연 칸의 윗줄에 지뢰가있으면
           around = around.concat(
+            //해당 칸을 마주하는 윗줄의 3칸 검사
             [tableData[row - 1][cell - 1]],
             [tableData[row - 1][cell]],
             [tableData[row - 1][cell + 1]]
           );
         }
         if (tableData[row + 1]) {
+          //연 칸의 밑줄에 지뢰가있으면
           around = around.concat(
+            // 해당 칸을 마주하는 밑줄의 3칸 검사
             [tableData[row + 1][cell - 1]],
             [tableData[row + 1][cell]],
             [tableData[row + 1][cell + 1]]
@@ -154,10 +163,12 @@ const reducer = (state, action) => {
         }
 
         const count = around.filter((v) => {
+          //주변 지뢰 갯수
           return [CODE.MINE, CODE.FLAG_MINE, CODE.QUESTION_MINE].includes(v);
         }).length;
 
         if (count === 0) {
+          //내가 빈칸일때
           if (row > -1) {
             const near = [];
             if (row - 1 > -1) {
@@ -174,6 +185,7 @@ const reducer = (state, action) => {
               near.concat([row + 1, cell + 1]);
             }
 
+            //빈칸 옆칸들이 한꺼번에 열리게 검사하는 재귀함수
             near.forEach((n) => {
               if (tableData[n[0]][n[1]] !== CODE.OPENED) {
                 checkAround(n[0], n[1]); //n[0]:row n[1]: cell
@@ -225,6 +237,7 @@ const reducer = (state, action) => {
       };
     }
 
+    //빈칸에 깃발을 꽂을때
     case FLAG_CELL: {
       const tableData = [...state.tableData];
       tableData[action.row] = [...state.tableData[action.row]];
@@ -239,6 +252,7 @@ const reducer = (state, action) => {
       };
     }
 
+    //깃발 심어져있는 상태에서 물음표 만들기
     case QUESTION_CELL: {
       const tableData = [...state.tableData];
       tableData[action.row] = [...state.tableData[action.row]];
