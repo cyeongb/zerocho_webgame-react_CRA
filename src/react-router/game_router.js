@@ -1,5 +1,11 @@
 import React from "react";
-import { HashRouter, BrowserRouter, Route, Link } from "react-router-dom";
+import {
+  HashRouter,
+  BrowserRouter,
+  Route,
+  Link,
+  Switch,
+} from "react-router-dom";
 // HashRouter: 주소에 #이 생깁니다. ex)http://localhost:3000/#/wordRelay
 // ㄴ 새로고침을 해도 해당 화면이 그대로 보입니다.
 // 그런데 검색엔진이 인식하지 못하고 주소가 이상해서 잘 안쓴다고 합니다.
@@ -16,7 +22,7 @@ const game_router = () => {
         페이지 주소를 입력하면, 가상 페이지 주소를 이용해서 페이지가 넘어가는 '척'을 합니다.(Link의 눈속임)
         react-router-dom의 Link라는 기능으로 가상페이지가 이용 가능합니다.(Link가 Route를 불러줍니다)
         */}
-        <Link to="/game/mineSearch">지뢰찾기</Link>
+        <Link to="/game/mineSearch"> 지뢰찾기</Link>
         <br />
         <Link to="/game/lotto">로또</Link>
         <br />
@@ -35,18 +41,18 @@ const game_router = () => {
         <hr />
       </div>
       <div>
-        {/*<Route path="/mineSearch" component={MineSearch} />
-        <Route path="/lotto" component={Lotto_func} />
-        <Route path="/wordRelay" component={WordRelay_func} />
-        <Route path="/tictactoe" component={Tictactoe} />
-        <Route path="/rsp" component={Rsp_func} />
-        <Route path="/response" component={Response_func} />
-        <Route path="/gugudan" component={Gugudan} />
-        <Route path="/baseball" component={Baseball_func} /> */}
         {/*route들이 너무 많아도 문제이기때문에 그럴떄 dynamic route matching을 사용합니다. 
         :이 붙은 params는 동적으로 바뀝니다
         */}
-        <Route path="/game/:name" component={GameMatcher} />
+        <Switch>
+          {/* Switch는 route중 일치하는 한개의 route만 내보냅니다 */}
+          {/* <Route path="/game/:name" component={GameMatcher} /> */}
+          <Route
+            exact //exact를 붙이면 path명이 조금이라도 다를경우 다음으로 넘어갑니다
+            path="/game/:name"
+            render={(props) => <GameMatcher {...props} />} // render로 props를 넘겨주는게 더 좋다고합니다
+          />
+        </Switch>
       </div>
     </BrowserRouter>
   );
